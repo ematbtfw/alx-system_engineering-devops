@@ -1,1 +1,1 @@
-About Bash projects
+#!/bin/bash
