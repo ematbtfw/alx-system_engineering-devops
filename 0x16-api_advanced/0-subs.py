@@ -1,19 +1,21 @@
 #!/usr/bin/python3
-"""
-Importing requests module
-"""
-
-from requests import get
+"""Function to query subscribers on a given Reddit subreddit."""
+import requests
 
 
 def number_of_subscribers(subreddit):
-    # Get the JSON response from the Reddit API.
-    response = requests.get(
-        f"https://api.reddit.com/r/{subreddit}/about", headers={"User-Agent": "my-app"}
-    )
-    # Check if the response was successful.
-    if response.status_code != 200:
-        return 0
-    # Get the number of subscribers from the JSON response.
-    response_json = response.json()
-    return response_json["subscribers"]
+    """Return the total number of subscribers on a given subreddit."""
+    try:
+        url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+        headers = {
+            "User-Agent": "linux:0x16.api.advanced:v1.0.0\
+            (by /u/Large_Alternative_30)"
+        }
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        if response.status_code == 404:
+            return 0
+        results = response.json().get("data")
+        return results.get("subscribers")
+    except (Exception):
+        print('Not Found')
+        return (0)
